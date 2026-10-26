@@ -1,0 +1,12 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: Discussions — ideas and exploration
+    url: https://github.com/WeGotWorkspace/WeGotWorkspace/discussions
+    about: Share ideas and explore outcomes. Maintainers may promote promising threads to Goals later.
+  - name: Bug report
+    url: https://github.com/WeGotWorkspace/WeGotWorkspace/issues/new?template=bug-report.yml
+    about: Something broken or incorrect? Bugs are filed in the code repository.
+  - name: Product roadmap
+    url: https://github.com/orgs/WeGotWorkspace/projects/1
+    about: Browse Goals by status, app, and release.

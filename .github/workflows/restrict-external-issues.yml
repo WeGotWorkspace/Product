@@ -1,0 +1,54 @@
+name: Restrict external issues
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+
+jobs:
+  enforce-maintainer-only-goals:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close issues from non-maintainers
+        uses: actions/github-script@v9
+        with:
+          script: |
+            // Every issue in this repository is a Goal, and only maintainers file Goals.
+            const issue = context.payload.issue;
+            const association = issue.author_association;
+            const allowed = new Set(['OWNER', 'MEMBER', 'COLLABORATOR']);
+            if (allowed.has(association)) {
+              core.info(`Allowing ${association} author`);
+              return;
+            }
+
+            const body = [
+              'Thanks for your interest in WeGotWorkspace.',
+              '',
+              '**Goals are maintainer-filed only.**',
+              '',
+              'Please use:',
+              '- [Discussions](https://github.com/WeGotWorkspace/WeGotWorkspace/discussions) for ideas and exploration (maintainers may promote promising threads to Goals)',
+              '- The [Bug report](https://github.com/WeGotWorkspace/WeGotWorkspace/issues/new?template=bug-report.yml) template in the code repository for defects',
+              '',
+              `_Closed automatically (author association: \`${association}\`)._`,
+            ].join('\n');
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              body,
+            });
+
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              state: 'closed',
+              state_reason: 'not_planned',
+            });
+
+            core.info(`Closed issue #${issue.number} from ${association}`);
