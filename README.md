@@ -28,3 +28,5 @@ Full process: [GOVERNANCE.md](https://github.com/WeGotWorkspace/WeGotWorkspace/b
 ## Language
 
 Goals and comments are written in **English**, even when the discussion that produced them was not.
+
+Goals are read by customers and the product lead, so they use plain English (CEFR B1): what a person can do and how we know it works, not how it is built. Technical design lives in the Epic under each Goal in the code repository. When technical text is taken out of a Goal, it moves to that Epic; it is never just deleted. Rules and examples: [plain-language.md](https://github.com/WeGotWorkspace/WeGotWorkspace/blob/main/.agents/skills/developer/plain-language.md).

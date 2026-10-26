@@ -15,6 +15,8 @@ body:
         Titles should be verb outcomes — e.g. “Share Docs and Drive files with guests via a link”.
         Do not start the title with `[Goal]`. The GitHub issue type is Feature; the label is `type:goal`.
         **Write the entire issue in English**, even if the conversation that produced it was in another language.
+        **Write for customers and the product lead:** plain English (CEFR B1), short sentences, no code, file paths, package names, endpoints, or protocol names. Aim for at most about 400 words above Delivery.
+        Technical design does not go here. Put it in the Epic under this Goal in the code repository; if text moves out of a Goal, it moves there, never away. [Plain-language rules](https://github.com/WeGotWorkspace/WeGotWorkspace/blob/main/.agents/skills/developer/plain-language.md).
         **One Goal = one outcome** (fulfillable independently). Do not bundle multiple outcomes; do not parent a Goal under another Goal — group with `area:*` + milestone. Design language / suite consistency belongs in Non-goals (constraint), not as its own Goal.
 
   - type: textarea
@@ -30,7 +32,7 @@ body:
     id: who
     attributes:
       label: Who it's for
-      description: Persona / context (self-hosted admin, end user, guest, etc.).
+      description: The people who notice the difference, in plain words (self-hosted admin, end user, guest, etc.).
       placeholder: End users on a self-hosted instance; guests who receive a share link.
     validations:
       required: true
@@ -39,7 +41,7 @@ body:
     id: success
     attributes:
       label: Success looks like
-      description: Observable success signals a non-technical reader can check. Not implementer AC checkboxes.
+      description: Observable success signals a non-technical reader can check, written from the user's side ("I can …"). Not implementer AC checkboxes.
       placeholder: |
         - A signed-in user can create a share link for a file or doc
         - A guest can open the link and view (or edit, if allowed) without logging in
@@ -82,7 +84,7 @@ body:
     id: decisions
     attributes:
       label: Decisions (optional)
-      description: Contested or easy-to-re-litigate product decisions. Skip if none.
+      description: Contested or easy-to-re-litigate product decisions, in plain words — what the user gets and why. Technical choices go in the Epic. Skip if none.
       placeholder: Guest sharing is a must-have for v0.9; password-protected links are in scope.
     validations:
       required: false
@@ -91,7 +93,7 @@ body:
     id: delivery
     attributes:
       label: Delivery (maintainers)
-      description: Links to child epics/tasks in the code repository only — no eng detail here. Prefer adding them as sub-issues.
+      description: Links to child epics/tasks in the code repository only — no eng detail here. Name the Epic that holds the technical design. Prefer adding them as sub-issues.
       placeholder: |
         - Epic: WeGotWorkspace/WeGotWorkspace#…
         - Task: WeGotWorkspace/WeGotWorkspace#…
