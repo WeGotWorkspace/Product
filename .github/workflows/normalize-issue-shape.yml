@@ -1,8 +1,11 @@
-name: Normalize issue type and title
+name: Normalize Goal title
+
+# Every issue in this repository is a Goal, so Goals get no issue type and no
+# kind label. This only removes a leading "[Goal]" from the title.
 
 on:
   issues:
-    types: [opened, edited, labeled]
+    types: [opened, edited]
 
 permissions:
   issues: write
@@ -11,57 +14,20 @@ jobs:
   normalize:
     runs-on: ubuntu-latest
     steps:
-      - name: Set Feature type on Goals and strip the [Goal] prefix
+      - name: Strip the [Goal] title prefix
         uses: actions/github-script@v9
         with:
           script: |
             const issue = context.payload.issue;
-            const labels = (issue.labels || []).map((label) => label.name);
-            const wanted = labels.includes("type:goal") ? "Feature" : null;
-            const current = issue.type?.name ?? null;
             const nextTitle = issue.title.replace(/^\[Goal\]\s+/, "");
-            const titleNeedsUpdate = nextTitle !== issue.title && nextTitle.length > 0;
-            const typeNeedsUpdate = Boolean(wanted) && current !== wanted;
-
-            if (!titleNeedsUpdate && !typeNeedsUpdate) {
+            if (nextTitle === issue.title || nextTitle.length === 0) {
               core.info(`Issue #${issue.number} already matches`);
               return;
             }
-
-            if (titleNeedsUpdate) {
-              await github.rest.issues.update({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issue.number,
-                title: nextTitle,
-              });
-              core.info(`Retitled #${issue.number}`);
-            }
-
-            if (!typeNeedsUpdate) return;
-
-            const types = await github.graphql(
-              `query($owner: String!) {
-                organization(login: $owner) {
-                  issueTypes(first: 20) {
-                    nodes { id name }
-                  }
-                }
-              }`,
-              { owner: context.repo.owner },
-            );
-            const match = types.organization.issueTypes.nodes.find((node) => node.name === wanted);
-            if (!match) {
-              core.setFailed(`No org issue type named ${wanted}`);
-              return;
-            }
-
-            await github.graphql(
-              `mutation($id: ID!, $issueTypeId: ID!) {
-                updateIssue(input: {id: $id, issueTypeId: $issueTypeId}) {
-                  issue { number }
-                }
-              }`,
-              { id: issue.node_id, issueTypeId: match.id },
-            );
-            core.info(`Set #${issue.number} issue type to ${wanted}`);
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              title: nextTitle,
+            });
+            core.info(`Retitled #${issue.number}`);

@@ -1,8 +1,5 @@
 name: "[Maintainers only] Goal"
 description: "Maintainers only — product Goal (user outcome) for the Product roadmap. Externals: use Discussions."
-type: Feature
-labels:
-  - type:goal
 body:
   - type: markdown
     attributes:
@@ -13,7 +10,7 @@ body:
         Use this template for **one fulfillable user-facing outcome** (Goals), not engineering tasks.
         Engineering work (epics, tasks, chores, bugs) is filed in [WeGotWorkspace/WeGotWorkspace](https://github.com/WeGotWorkspace/WeGotWorkspace) and attached to this Goal as sub-issues.
         Titles should be verb outcomes — e.g. “Share Docs and Drive files with guests via a link”.
-        Do not start the title with `[Goal]`. The GitHub issue type is Feature; the label is `type:goal`.
+        Do not start the title with `[Goal]`. Every issue in this repository is a Goal, so leave the issue type empty and add no kind label; use `area:*` labels.
         **Write the entire issue in English**, even if the conversation that produced it was in another language.
         **Write for customers and the product lead:** plain English (CEFR B1), short sentences, no code, file paths, package names, endpoints, or protocol names. Aim for at most about 400 words above Delivery.
         Technical design does not go here. Put it in the Epic under this Goal in the code repository; if text moves out of a Goal, it moves there, never away. [Plain-language rules](https://github.com/WeGotWorkspace/WeGotWorkspace/blob/main/.agents/skills/developer/plain-language.md).
