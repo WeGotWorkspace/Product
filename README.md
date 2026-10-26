@@ -17,7 +17,7 @@ Engineering work (epics, tasks, chores, bugs) and the code live in [WeGotWorkspa
   - **Adopted**: committed to a release. May take a milestone (`v0.9`, `v1.0`, …) as a soft target. Stays Adopted while it is being built.
   - **Fulfilled**: product judges the outcome met. Close the issue (`completed`); the board keeps Status Fulfilled.
 - One Goal is one outcome. Do not parent a Goal under another Goal. Group siblings with `area:*` labels and an optional milestone.
-- Labels: `type:goal` plus one or more `area:*`.
+- Labels: one or more `area:*`. There is no kind label and no issue type: every issue here is a Goal.
 - Delivery attaches as **sub-issues** from the code repository: epics and tasks in WeGotWorkspace/WeGotWorkspace list the Goal as their parent.
 - Goals are never the `Source:` of a spec and are never closed by a pull request.
 
