@@ -12,7 +12,7 @@ Engineering work (epics, tasks, chores, bugs) and the code live in [WeGotWorkspa
 
 ## How Goals work
 
-- Status on the board is **Identified → Adopted → Fulfilled**.
+- Status on the board is **Identified → Adopted → Fulfilled**. Status lives only on the board, not in the Goal text.
   - **Identified**: recognized user outcome, draft backlog. No milestone.
   - **Adopted**: committed to a release. May take a milestone (`v0.9`, `v1.0`, …) as a soft target. Stays Adopted while it is being built.
   - **Fulfilled**: product judges the outcome met. Close the issue (`completed`); the board keeps Status Fulfilled.
