@@ -16,11 +16,30 @@ jobs:
         with:
           script: |
             // Every issue in this repository is a Goal, and only maintainers file Goals.
+            // A maintainer is anyone with write access or more. Check the author's repository
+            // permission: author_association is CONTRIBUTOR for org members whose membership is
+            // private, so it would close Goals filed by maintainers.
             const issue = context.payload.issue;
+            const login = issue.user.login;
             const association = issue.author_association;
-            const allowed = new Set(['OWNER', 'MEMBER', 'COLLABORATOR']);
-            if (allowed.has(association)) {
-              core.info(`Allowing ${association} author`);
+            const maintainerPermissions = new Set(['admin', 'maintain', 'write']);
+
+            let permission;
+            try {
+              const { data } = await github.rest.repos.getCollaboratorPermissionLevel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                username: login,
+              });
+              permission = data.permission;
+            } catch (error) {
+              // Do not close anything when the check itself fails; a maintainer can close spam by hand.
+              core.warning(`Could not read the permission of ${login}: ${error.message}. Leaving #${issue.number} open.`);
+              return;
+            }
+
+            if (maintainerPermissions.has(permission)) {
+              core.info(`Allowing ${login} (permission: ${permission}, association: ${association})`);
               return;
             }
 
@@ -33,7 +52,7 @@ jobs:
               '- [Discussions](https://github.com/WeGotWorkspace/WeGotWorkspace/discussions) for ideas and exploration (maintainers may promote promising threads to Goals)',
               '- The [Bug report](https://github.com/WeGotWorkspace/WeGotWorkspace/issues/new?template=bug-report.yml) template in the code repository for defects',
               '',
-              `_Closed automatically (author association: \`${association}\`)._`,
+              `_Closed automatically (repository permission: \`${permission}\`)._`,
             ].join('\n');
 
             await github.rest.issues.createComment({
@@ -51,4 +70,4 @@ jobs:
               state_reason: 'not_planned',
             });
 
-            core.info(`Closed issue #${issue.number} from ${association}`);
+            core.info(`Closed issue #${issue.number} from ${login} (permission: ${permission})`);
